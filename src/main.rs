@@ -1,6 +1,9 @@
+#![allow(unused_imports, dead_code)]
+
 use std::io;
 use serde::Deserialize;
 use colored::*;
+use reqwest::blocking::Response;
 
 fn main() {}
 
@@ -31,4 +34,17 @@ struct Main {
 #[derive(Deserialize, Debug)]
 struct Wind {
     speed: f64,
+}
+
+/// Function to get the weather information from OpenWeatherMap API.
+fn get_weather_info(city: &str, country_code: &str, api_key: &str) -> Result<WeatherResponse, reqwest::Error> {
+    let url: String = format!(
+        "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}",
+        city, country_code, api_key,
+    );
+
+    let response: Response = reqwest::blocking::get(&url)?;
+    let response_json: WeatherResponse = response.json()?;
+
+    Ok(response_json)
 }
