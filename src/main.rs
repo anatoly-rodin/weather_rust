@@ -1,6 +1,9 @@
+#![allow(unused_imports, dead_code)]
+
 use std::io;
 use serde::Deserialize;
 use colored::*;
+use reqwest::blocking::Response;
 
 fn main() {}
 
@@ -40,8 +43,8 @@ fn get_weather(city: &str, country_code: &str, api_key: &str) -> Result<WeatherR
         city, country_code, api_key,
     );
 
-    let response = reqwest::blocking::get(&url)?;
-    let response_json = response.json::<WeatherResponse>()?;
+    let response: Response = reqwest::blocking::get(&url)?;
+    let response_json: WeatherResponse = response.json()?;
 
     Ok(response_json)
 }
