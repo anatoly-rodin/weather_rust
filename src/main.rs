@@ -37,7 +37,7 @@ struct Wind {
 }
 
 /// Function to get the weather information from OpenWeatherMap API.
-fn get_weather(city: &str, country_code: &str, api_key: &str) -> Result<WeatherResponse, reqwest::Error> {
+fn get_weather_info(city: &str, country_code: &str, api_key: &str) -> Result<WeatherResponse, reqwest::Error> {
     let url: String = format!(
         "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}",
         city, country_code, api_key,
