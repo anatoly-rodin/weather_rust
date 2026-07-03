@@ -1,11 +1,16 @@
 #![allow(unused_imports, dead_code)]
 
-use std::io;
+use std::{env, io};
 use serde::Deserialize;
 use colored::*;
 use reqwest::blocking::Response;
+use dotenv::dotenv;
 
-fn main() {}
+fn main() {
+    dotenv().ok();
+
+    let api_key: String = env::var("API_KEY").expect("API_KEY param is missed in .env file.");
+}
 
 /// Struct to deserialize the JSON response from openWeatherApp API.
 #[derive(Deserialize, Debug)]
