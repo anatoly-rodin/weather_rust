@@ -25,7 +25,7 @@ struct Weather {
 /// Struct to represent the main weather parameters.
 #[derive(Deserialize, Debug)]
 struct Main {
-    temperature: f64,
+    temp: f64,
     humidity: f64,
     pressure: f64,
 }
@@ -47,4 +47,32 @@ fn get_weather_info(city: &str, country_code: &str, api_key: &str) -> Result<Wea
     let response_json: WeatherResponse = response.json()?;
 
     Ok(response_json)
+}
+
+/// Function to display the weather information into terminal output.
+fn display_weather_info(response: &WeatherResponse) {
+    let description: &str = match response.weather.get(0) {
+        Some(weather) => &weather.description,
+        _ => "no desc",
+    };
+    let temperature: f64 = response.main.temp;
+    let humidity: f64 = response.main.humidity;
+    let pressure: f64 = response.main.pressure;
+    let wind_speed: f64 = response.wind.speed;
+
+    let weather_output_text: String = format!(
+        "Weather in {}: {}
+        > Temperature: {:.1} C
+        > Humidity: {:.1}%
+        > Pressure: {:.1} hPa
+        > Wind Speed: {:.1} m/s",
+        response.name,
+        description,
+        temperature,
+        humidity,
+        pressure,
+        wind_speed,
+    );
+
+    println!("{}", weather_output_text);
 }
