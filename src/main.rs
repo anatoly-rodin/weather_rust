@@ -10,6 +10,30 @@ fn main() {
     dotenv().ok();
 
     let api_key: String = env::var("API_KEY").expect("API_KEY param is missed in .env file.");
+
+    println!("{}", "Welcome to Weather Station!".bright_yellow());
+
+    loop {
+        println!("{}", "Please enter the name of the city:".bright_green());
+
+        let mut city: String = String::new();
+        io::stdin().read_line(&mut city).expect("Failed to read input");
+        let city = city.trim();
+
+        println!("{}", "Please enter the country code (e.g., UA for Ukraine):".bright_green());
+
+        let mut country_code: String = String::new();
+        io::stdin().read_line(&mut country_code).expect("Failed to read input");
+        let country_code = country_code.trim();
+
+        match get_weather_info(&city, &country_code, &api_key) {
+            Ok(response) => display_weather_info(&response),
+            _ => {
+                println!("{}", "Something went wrong. Try again, please.".bright_red());
+                continue;
+            },
+        }
+    }
 }
 
 /// Struct to deserialize the JSON response from openWeatherApp API.
@@ -79,5 +103,5 @@ fn display_weather_info(response: &WeatherResponse) {
         wind_speed,
     );
 
-    println!("{}", weather_output_text);
+    println!("{weather_output_text}\n");
 }
